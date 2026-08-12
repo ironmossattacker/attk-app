@@ -16,12 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pytest
-      - run: pytest --junitxml=report.xml
+      - run: pip install pytest pytest-mergify
+      - run: pytest
         env:
+          MERGIFY_TOKEN: ${{ secrets.MERGIFY_TOKEN }}
           FLAKE: ${{ inputs.flake || '0' }}
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: report.xml
